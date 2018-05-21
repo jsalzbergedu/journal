@@ -1,0 +1,29 @@
+#+Title: Programming Journal
++#Author: Jacob Salzberg
+
+Hello and welcome to my programming journal!
+
+* Motivation
+My motivation for programming follows from a single imperative: "Have Fun."
+
+* Snippets
+** Java
+**** JNR
+***** Spawn a process
+#+Begin_src java
+import jnr.posix.POSIX;
+import jnr.posix.POSIXFactory;
+import jnr.posix.SpawnFileAction;
+
+public Class {
+    public static void main(String[] args) {
+        ArrayList<String> env = new ArrayList<String>();
+        for (Map.Entry<String, String> pair : System.getenv().entrySet()) {
+            env.add(String.format("%s=%s", pair.getKey(), pair.getValue()));
+        }
+
+        long childPID = posix.posix_spawnp("./doot.sh",
+                                           new ArrayList<SpawnFileAction>(),
+                                           new ArrayList<String>(), env);
+    }
+#+End_src
