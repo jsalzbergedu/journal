@@ -1,0 +1,5 @@
+#+Title: Journal
+#+Author: Jacob Salzberg
+
+* Programming Journal
+My programming journal is [[file:journal.org][here.]]
