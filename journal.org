@@ -1,9 +1,10 @@
 #+Title: Programming Journal
-+#Author: Jacob Salzberg
+#+Author: Jacob Salzberg
 
 Hello and welcome to my programming journal!
 
 * Motivation
+
 My motivation for programming follows from a single imperative: "Have Fun."
 
 * Snippets
@@ -27,3 +28,65 @@ public Class {
                                            new ArrayList<String>(), env);
     }
 #+End_src
+**** Immutables
+***** GSON subtyping
+#+Begin_src Java
+@Gson.ExpectedSubtypes({Open.class, Close.class})
+#+End_src
+** Idris
+#+begin_src Idris
+-- Final tagless interpreter notes
+
+interface ExpAlg a where
+  total lit : Int -> a
+  total add : a -> a -> a
+
+expressionOne : ExpAlg a => a
+expressionOne = add (lit 1)
+                    (add (lit 2)
+                         (lit 3))
+
+data Evaluate = Eval Int
+
+ExpAlg Evaluate where
+  lit n = Eval n
+  add x y = case (x, y) of
+    (Eval a, Eval b) => Eval $ a + b
+
+interface ExpAlg a => MulAlg a where
+  total mul : a -> a -> a
+
+MulAlg Evaluate where
+  mul x y = case (x, y) of
+    (Eval a, Eval b) => Eval $ a * b
+
+data ViewHolder = View String
+
+ExpAlg ViewHolder where
+  lit n = View $ show n
+  add x y = case (x, y) of
+    (View x, View y) => View $ "(" ++ x ++ " + " ++ y ++ ")"
+
+
+MulAlg ViewHolder where
+  mul x y = case (x, y) of
+    (View x, View y) => View $ "(" ++ x ++ " * " ++ y ++ ")"
+
+expressionTwo : MulAlg a => a
+expressionTwo = add (lit 1)
+                (mul (lit 2)
+                     (lit 3))
+
+iResultOfExpOne : Evaluate
+iResultOfExpOne = expressionOne
+
+iResultOfExpTwo : Evaluate
+iResultOfExpTwo = expressionTwo
+
+
+sResultOfExpOne : ViewHolder
+sResultOfExpOne = expressionOne
+
+sResultOfExpTwo : ViewHolder
+sResultOfExpTwo = expressionTwo
+#+end_src
