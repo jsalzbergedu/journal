@@ -34,6 +34,8 @@ public Class {
 @Gson.ExpectedSubtypes({Open.class, Close.class})
 #+End_src
 ** Idris
+*** Final Tagless Interpreter
+Based on [[https://oleksandrmanzyuk.wordpress.com/2014/06/18/from-object-algebras-to-finally-tagless-interpreters-2/][this blog post]].
 #+begin_src Idris
 -- Final tagless interpreter notes
 
