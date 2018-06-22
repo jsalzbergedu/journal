@@ -7,6 +7,28 @@ Hello and welcome to my programming journal!
 
 My motivation for programming follows from a single imperative: "Have Fun."
 
+* Libre Software Musings
+** Categories of people involved in a project
+Out of these three categories, rank them by the number of people:
+
+1. Number of higher ups in charge of a project
+2. Number of software developers making a project
+3. Number of users of a project
+
+** Relation to democracy
+In a democratic system, who ideally has the power? The people
+with the most money, the people running the system, or
+the people in the majority?
+
+In a democratic system, is there any difference between the
+people running the system and the people in the majority?
+
+In libre software, is there any difference between a
+developer and a user?
+
+** Terminoligy
+Perhaps free/libre software should be called "liberated software."
+
 * Snippets
 ** Java
 **** JNR
@@ -33,6 +55,141 @@ public Class {
 #+Begin_src Java
 @Gson.ExpectedSubtypes({Open.class, Close.class})
 #+End_src
+**** MultiJ
+***** Expression problem
+#+begin_src Java
+/**
+ * The main class of the program.
+ * @author Jacob Salzberg
+ */
+public class MultiJExpressionProblem {
+    public static Expr expression =
+            Sum.from(Sum.from(Lit.from(1), Lit.from(2)), Lit.from(3));
+
+    public static Expr expression2 =
+            Sum.from(Mul.from(Sum.from(Lit.from(1), Lit.from(2)),
+                              Lit.from(3)),
+                     Lit.from(4));
+
+    /**
+     * The entry point of the program.
+     * @param args Command line arguments. Not used.
+     */
+    public static void main(String[] args) {
+        ExprEval eval1 = org.multij.MultiJ.instance(ExprEval.class);
+        ExprView view1 = org.multij.MultiJ.instance(ExprView.class);
+        System.out.println("The result of: " + view1.view(expression));
+        System.out.println("is " + eval1.eval(expression));
+        MulView view2 = org.multij.MultiJ.instance(MulView.class);
+        MulEval eval2= org.multij.MultiJ.instance(MulEval.class);
+        System.out.println("The result of: " + view2.view(expression2));
+        System.out.println("is " + eval2.eval(expression2));
+    }
+
+    public interface Expr {
+    }
+
+    public interface Lit extends Expr {
+        public int lit();
+        public static Lit from(int x) {
+            return new Lit() {
+                @Override
+                public int lit() {
+                    return x;
+                }
+            };
+        }
+    }
+
+    public interface Sum extends Expr {
+        Expr augend();
+        Expr addend();
+        public static Sum from(Expr augend, Expr addend) {
+            return new Sum() {
+                @Override
+                public Expr augend() {
+                    return augend;
+                }
+
+                @Override
+                public Expr addend() {
+                    return addend;
+                }
+            };
+        }
+    }
+
+    @org.multij.Module
+    public interface ExprEval {
+        default int eval(Expr expr) {
+            throw new IllegalArgumentException("Incorrect type dispatched.");
+        }
+
+        default int eval(Lit expr) {
+            return expr.lit();
+        }
+
+        default int eval(Sum expr) {
+            return eval(expr.augend()) + eval(expr.addend());
+        }
+    }
+
+    @org.multij.Module
+    public interface ExprView {
+        default String view(Expr expr) {
+            throw new IllegalArgumentException("Incorrect type dispatched.");
+        }
+
+        default String view(Lit expr) {
+            return expr.lit() + "";
+        }
+
+        default String view(Sum expr) {
+            return "(" +
+                    view(expr.augend()) +
+                    " + " +
+                    view(expr.addend()) +
+                    ")";
+        }
+    }
+
+    public interface Mul extends Expr {
+        Expr multiplier();
+        Expr multiplicand();
+        public static Mul from(Expr multiplier, Expr multiplicand) {
+            return new Mul() {
+                @Override
+                public Expr multiplier() {
+                    return multiplier;
+                }
+
+                @Override
+                public Expr multiplicand() {
+                    return multiplicand;
+                }
+            };
+        }
+    }
+
+    @org.multij.Module
+    public interface MulEval extends ExprEval {
+        default int eval(Mul expr) {
+            return eval(expr.multiplier()) * eval(expr.multiplicand());
+        }
+    }
+
+    @org.multij.Module
+    public interface MulView extends ExprView {
+        default String view(Mul expr) {
+            return "(" +
+                    view(expr.multiplier()) +
+                    " * " +
+                    view(expr.multiplicand()) +
+                    ")";
+        }
+    }
+}
+#+end_src
 ** Idris
 *** Final Tagless Interpreter
 Based on [[https://oleksandrmanzyuk.wordpress.com/2014/06/18/from-object-algebras-to-finally-tagless-interpreters-2/][this blog post]].
