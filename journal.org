@@ -7,25 +7,6 @@ Hello and welcome to my programming journal!
 
 My motivation for programming follows from a single imperative: "Have Fun."
 
-* Libre Software Musings
-** Categories of people involved in a project
-Out of these three categories, rank them by the number of people:
-
-1. Number of higher ups in charge of a project
-2. Number of software developers making a project
-3. Number of users of a project
-
-** Relation to democracy
-In a democratic system, who ideally has the power? The people
-with the most money, the people running the system, or
-the people in the majority?
-
-In a democratic system, is there any difference between the
-people running the system and the people in the majority?
-
-In libre software, is there any difference between a
-developer and a user?
-
 ** Terminoligy
 Perhaps free/libre software should be called "liberated software."
 
