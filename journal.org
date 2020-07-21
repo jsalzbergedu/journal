@@ -3,12 +3,6 @@
 
 Hello and welcome to my programming journal!
 
-* Motivation
-
-My motivation for programming follows from a single imperative: "Have Fun."
-
-** Terminoligy
-Perhaps free/libre software should be called "liberated software."
 
 * Snippets
 ** Java
